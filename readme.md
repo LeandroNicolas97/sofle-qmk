@@ -1,4 +1,44 @@
+# Compilar sofle:
+
+Para compilar el firmware personalizado para tu teclado Sofle, se debe ejecutar el siguiente comando dentro del directorio de QMK
+
+**cd ~/qmk_firmware**
+
+
+
+Compilar el keymap personalizado "si" para Sofle Rev1:
+
+**qmk compile -kb sofle/rev1 -km si**
+
+
+
+Este comando generará el archivo hexadecimal que posteriormente flashearemos en ambas mitades del teclado.
+
+
+# Modo bootloader
+
+Antes de flashear el firmware, se necesita poner el teclado en modo bootloader. Esto se puede hacer de dos maneras:
+
+1-Método del botón físico: Localizar el botón de RESET en la PCB del teclado y presiónalo 2 veces rapidamente mientras esta conctada al pc.
+
+2-Método de combinación de teclas: Si has configurado una combinación de teclas para entrar en modo bootloader en tu keymap, utiliza esa combinación.
+
+El teclado entrará en modo bootloader, lo que permitirá que la computadora lo reconozca como un dispositivo programable.
+
+
+
+
+# Flashear sofle:
+Una vez que tu teclado esté en modo bootloader, se puede proceder a flashear el firmware:
+
+**qmk flash -kb sofle/rev1 -km si -bl avrdude**
+
+
+
+
 # Quantum Mechanical Keyboard Firmware
+
+
 
 [![Current Version](https://img.shields.io/github/tag/qmk/qmk_firmware.svg)](https://github.com/qmk/qmk_firmware/tags)
 [![Discord](https://img.shields.io/discord/440868230475677696.svg)](https://discord.gg/qmk)
