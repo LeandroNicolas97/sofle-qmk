@@ -82,8 +82,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `----------------------------------'           '------''---------------------------'
  */
 [_RAISE] = LAYOUT(
-  _______, _______ , _______ , _______ , _______ , _______,                           _______,  _______  , _______,  _______ ,  _______ ,_______,
-  _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PRVWD,   KC_UP, KC_NXTWD,C(KC_BSPC), KC_PPLS,
+  _______, _______ , _______ , _______ , _______ , _______,                           _______,  _______  , _______,  _______ ,  _______ ,KC_DEL,
+  _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PRVWD,   KC_UP, KC_NXTWD,KC_KP_PLUS, KC_PLUS,
   _______, KC_LALT,  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_PEQL,
   _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,  _______,       _______,  XXXXXXX, KC_LSTRT, XXXXXXX, KC_LEND,   XXXXXXX, _______,
                          _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
@@ -204,17 +204,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     // Luego configuramos los colores RGB según la capa activa
     switch (get_highest_layer(state)) {
-        case 0:  // Capa base
-            rgblight_sethsv(0, 255, 120); // Rojo
+        case 0:  // Capa base (Rojo intenso)
+            rgblight_sethsv(0, 255, 255);  // Rojo: H=0, S=255, V=255 (máximo brillo)
             break;
-        case 1:  // LOWER
-            rgblight_sethsv(85, 255, 120); // Verde
+        case 1:  // LOWER (Morado/Violeta intenso)
+            rgblight_sethsv(240, 255, 250);  // Violeta: H=270, S=255, V=255 (máximo brillo)
             break;
-        case 2:  // RAISE
-            rgblight_sethsv(170, 255, 120); // Azul
+        case 2:  // RAISE (Cyan)
+            rgblight_sethsv(130, 255, 250);  // Cyan: H=180, S=255, V=250
             break;
-        case 3:  // ADJUST
-            rgblight_sethsv(43, 255, 120); // Amarillo
+        case 3:  // ADJUST (Verde)
+            rgblight_sethsv(80, 255, 120);  // Verde: H=120, S=255, V=120
             break;
         default:
             break;
