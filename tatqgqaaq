@@ -1,0 +1,165 @@
+[1mdiff --git a/keyboards/sofle/keymaps/si/keymap.c b/keyboards/sofle/keymaps/si/keymap.c[m
+[1mindex 4b14606157..5bc3d464b5 100644[m
+[1m--- a/keyboards/sofle/keymaps/si/keymap.c[m
+[1m+++ b/keyboards/sofle/keymaps/si/keymap.c[m
+[36m@@ -104,7 +104,7 @@[m [mconst uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[m
+  */[m
+   [_ADJUST] = LAYOUT([m
+   XXXXXXX , XXXXXXX,  XXXXXXX ,  XXXXXXX , XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,[m
+[31m-  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_QWERTY,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,[m
+[32m+[m[32m  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_QWERTY,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, XXXXXXX, XXXXXXX,[m
+   XXXXXXX , XXXXXXX,CG_TOGG, XXXXXXX,    XXXXXXX,  XXXXXXX,                     XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,[m
+   XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,  XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,[m
+                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______[m
+[36m@@ -112,90 +112,26 @@[m [mconst uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[m
+ };[m
+ [m
+ [m
+[32m+[m
+[32m+[m[32muint8_t hue = 43;  // Valor inicial del tono (Amarillo)[m
+[32m+[m
+ bool process_record_user(uint16_t keycode, keyrecord_t *record) {[m
+     switch (keycode) {[m
+[31m-        case KC_PRVWD:[m
+[31m-            if (record->event.pressed) {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    register_mods(mod_config(MOD_LALT));[m
+[31m-                    register_code(KC_LEFT);[m
+[31m-                } else {[m
+[31m-                    register_mods(mod_config(MOD_LCTL));[m
+[31m-                    register_code(KC_LEFT);[m
+[31m-                }[m
+[31m-            } else {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    unregister_mods(mod_config(MOD_LALT));[m
+[31m-                    unregister_code(KC_LEFT);[m
+[31m-                } else {[m
+[31m-                    unregister_mods(mod_config(MOD_LCTL));[m
+[31m-                    unregister_code(KC_LEFT);[m
+[31m-                }[m
+[31m-            }[m
+[31m-            break;[m
+[31m-        case KC_NXTWD:[m
+[31m-             if (record->event.pressed) {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    register_mods(mod_config(MOD_LALT));[m
+[31m-                    register_code(KC_RIGHT);[m
+[31m-                } else {[m
+[31m-                    register_mods(mod_config(MOD_LCTL));[m
+[31m-                    register_code(KC_RIGHT);[m
+[31m-                }[m
+[31m-            } else {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    unregister_mods(mod_config(MOD_LALT));[m
+[31m-                    unregister_code(KC_RIGHT);[m
+[31m-                } else {[m
+[31m-                    unregister_mods(mod_config(MOD_LCTL));[m
+[31m-                    unregister_code(KC_RIGHT);[m
+[31m-                }[m
+[31m-            }[m
+[31m-            break;[m
+[31m-        case KC_LSTRT:[m
+[32m+[m[32m        case RGB_TOG:  // Usando RGB_TOG para cambiar el color (o el keycode que prefieras)[m
+             if (record->event.pressed) {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                     //CMD-arrow on Mac, but we have CTL and GUI swapped[m
+[31m-                    register_mods(mod_config(MOD_LCTL));[m
+[31m-                    register_code(KC_LEFT);[m
+[31m-                } else {[m
+[31m-                    register_code(KC_HOME);[m
+[31m-                }[m
+[31m-            } else {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    unregister_mods(mod_config(MOD_LCTL));[m
+[31m-                    unregister_code(KC_LEFT);[m
+[31m-                } else {[m
+[31m-                    unregister_code(KC_HOME);[m
+[31m-                }[m
+[32m+[m[32m                hue = (hue + 10) % 256;  // Cambia el color en pasos de 10[m
+[32m+[m[32m                rgblight_sethsv(hue, 255, 255);  // Cambia el color con saturación y brillo al máximo[m
+             }[m
+[31m-            break;[m
+[31m-        case KC_LEND:[m
+[31m-            if (record->event.pressed) {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    //CMD-arrow on Mac, but we have CTL and GUI swapped[m
+[31m-                    register_mods(mod_config(MOD_LCTL));[m
+[31m-                    register_code(KC_RIGHT);[m
+[31m-                } else {[m
+[31m-                    register_code(KC_END);[m
+[31m-                }[m
+[31m-            } else {[m
+[31m-                if (keymap_config.swap_lctl_lgui) {[m
+[31m-                    unregister_mods(mod_config(MOD_LCTL));[m
+[31m-                    unregister_code(KC_RIGHT);[m
+[31m-                } else {[m
+[31m-                    unregister_code(KC_END);[m
+[31m-                }[m
+[31m-            }[m
+[31m-            break;[m
+[32m+[m[32m            return false;  // No proceses el keycode después de cambiar el color[m
+[32m+[m[32m        // Agrega otros casos de teclas que desees manejar aquí[m
+     }[m
+[31m-    return true;[m
+[32m+[m[32m    return true;  // Para los demás keycodes[m
+ }[m
+ [m
+ void keyboard_post_init_user(void) {[m
+     rgblight_enable();      // Asegura que el RGB está encendido[m
+     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT); // Establece un modo estático[m
+[31m-    rgblight_sethsv(0, 255, 120); // Rojo por defecto[m
+[32m+[m[32m    rgblight_sethsv(hue, 255, 255); // Amarillo por defecto (o el color inicial que desees)[m
+ }[m
+ [m
+ layer_state_t layer_state_set_user(layer_state_t state) {[m
+[36m@@ -204,17 +140,17 @@[m [mlayer_state_t layer_state_set_user(layer_state_t state) {[m
+ [m
+     // Luego configuramos los colores RGB según la capa activa[m
+     switch (get_highest_layer(state)) {[m
+[31m-        case 0:  // Capa base (Rojo intenso)[m
+[31m-            rgblight_sethsv(0, 255, 255);  // Rojo: H=0, S=255, V=255 (máximo brillo)[m
+[32m+[m[32m        case 0:  // Capa base (QWERTY)[m
+[32m+[m[32m            rgblight_sethsv(hue, 255, 255);  // Usa el color establecido por RGB_TOG[m
+             break;[m
+[31m-        case 1:  // LOWER (Morado/Violeta intenso)[m
+[31m-            rgblight_sethsv(240, 255, 250);  // Violeta: H=270, S=255, V=255 (máximo brillo)[m
+[32m+[m[32m        case 1:  // LOWER (Morado/Violeta)[m
+[32m+[m[32m            rgblight_sethsv(240, 255, 250);  // Violeta[m
+             break;[m
+         case 2:  // RAISE (Cyan)[m
+[31m-            rgblight_sethsv(130, 255, 250);  // Cyan: H=180, S=255, V=250[m
+[32m+[m[32m            rgblight_sethsv(130, 255, 250);  // Cyan[m
+             break;[m
+         case 3:  // ADJUST (Verde)[m
+[31m-            rgblight_sethsv(80, 255, 120);  // Verde: H=120, S=255, V=120[m
+[32m+[m[32m            rgblight_sethsv(80, 255, 120);  // Verde[m
+             break;[m
+         default:[m
+             break;[m
+[36m@@ -222,11 +158,22 @@[m [mlayer_state_t layer_state_set_user(layer_state_t state) {[m
+ [m
+     return state;[m
+ }[m
+[32m+[m
+[32m+[m
+[32m+[m
+ bool encoder_update_user(uint8_t index, bool clockwise) {[m
+[31m-    if (clockwise) {[m
+[31m-        tap_code(KC_WH_D);[m
+[31m-    } else {[m
+[31m-        tap_code(KC_WH_U);[m
+[32m+[m[32m    if (index == 0) {  // Encoder izquierdo (volumen)[m
+[32m+[m[32m        if (clockwise) {[m
+[32m+[m[32m            tap_code(KC_VOLD);  // Bajar volumen (antes subía)[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m            tap_code(KC_VOLU);  // Subir volumen (antes bajaba)[m
+[32m+[m[32m        }[m
+[32m+[m[32m    } else if (index == 1) {  // Encoder derecho (scroll)[m
+[32m+[m[32m        if (clockwise) {[m
+[32m+[m[32m            tap_code(KC_WH_D);  // Scroll hacia abajo[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m            tap_code(KC_WH_U);  // Scroll hacia arriba[m
+[32m+[m[32m        }[m
+     }[m
+     return false;[m
+ }[m

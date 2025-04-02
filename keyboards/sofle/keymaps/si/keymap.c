@@ -104,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT(
   XXXXXXX , XXXXXXX,  XXXXXXX ,  XXXXXXX , XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_QWERTY,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_QWERTY,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, XXXXXXX, XXXXXXX,
   XXXXXXX , XXXXXXX,CG_TOGG, XXXXXXX,    XXXXXXX,  XXXXXXX,                     XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,
   XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,  XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
@@ -112,90 +112,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
+
+uint8_t hue = 43;  // Valor inicial del tono (Amarillo)
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case KC_PRVWD:
+        case RGB_TOG:  // Usando RGB_TOG para cambiar el color (o el keycode que prefieras)
             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
-                    register_mods(mod_config(MOD_LALT));
-                    register_code(KC_LEFT);
-                } else {
-                    register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_LEFT);
-                }
-            } else {
-                if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LALT));
-                    unregister_code(KC_LEFT);
-                } else {
-                    unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_LEFT);
-                }
+                hue = (hue + 10) % 256;  // Cambia el color en pasos de 10
+                rgblight_sethsv(hue, 255, 255);  // Cambia el color con saturación y brillo al máximo
             }
-            break;
-        case KC_NXTWD:
-             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
-                    register_mods(mod_config(MOD_LALT));
-                    register_code(KC_RIGHT);
-                } else {
-                    register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_RIGHT);
-                }
-            } else {
-                if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LALT));
-                    unregister_code(KC_RIGHT);
-                } else {
-                    unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_RIGHT);
-                }
-            }
-            break;
-        case KC_LSTRT:
-            if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
-                     //CMD-arrow on Mac, but we have CTL and GUI swapped
-                    register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_LEFT);
-                } else {
-                    register_code(KC_HOME);
-                }
-            } else {
-                if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_LEFT);
-                } else {
-                    unregister_code(KC_HOME);
-                }
-            }
-            break;
-        case KC_LEND:
-            if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
-                    //CMD-arrow on Mac, but we have CTL and GUI swapped
-                    register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_RIGHT);
-                } else {
-                    register_code(KC_END);
-                }
-            } else {
-                if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_RIGHT);
-                } else {
-                    unregister_code(KC_END);
-                }
-            }
-            break;
+            return false;  // No proceses el keycode después de cambiar el color
+        // Agrega otros casos de teclas que desees manejar aquí
     }
-    return true;
+    return true;  // Para los demás keycodes
 }
 
 void keyboard_post_init_user(void) {
     rgblight_enable();      // Asegura que el RGB está encendido
     rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT); // Establece un modo estático
-    rgblight_sethsv(0, 255, 120); // Rojo por defecto
+    rgblight_sethsv(hue, 255, 255); // Amarillo por defecto (o el color inicial que desees)
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
@@ -204,17 +140,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     // Luego configuramos los colores RGB según la capa activa
     switch (get_highest_layer(state)) {
-        case 0:  // Capa base (Rojo intenso)
-            rgblight_sethsv(0, 255, 255);  // Rojo: H=0, S=255, V=255 (máximo brillo)
+        case 0:  // Capa base (QWERTY)
+            rgblight_sethsv(hue, 255, 255);  // Usa el color establecido por RGB_TOG
             break;
-        case 1:  // LOWER (Morado/Violeta intenso)
-            rgblight_sethsv(240, 255, 250);  // Violeta: H=270, S=255, V=255 (máximo brillo)
+        case 1:  // LOWER (Morado/Violeta)
+            rgblight_sethsv(240, 255, 250);  // Violeta
             break;
         case 2:  // RAISE (Cyan)
-            rgblight_sethsv(130, 255, 250);  // Cyan: H=180, S=255, V=250
+            rgblight_sethsv(130, 255, 250);  // Cyan
             break;
         case 3:  // ADJUST (Verde)
-            rgblight_sethsv(80, 255, 120);  // Verde: H=120, S=255, V=120
+            rgblight_sethsv(80, 255, 120);  // Verde
             break;
         default:
             break;
@@ -222,11 +158,22 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     return state;
 }
+
+
+
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (clockwise) {
-        tap_code(KC_WH_D);
-    } else {
-        tap_code(KC_WH_U);
+    if (index == 0) {  // Encoder izquierdo (volumen)
+        if (clockwise) {
+            tap_code(KC_VOLD);  // Bajar volumen (antes subía)
+        } else {
+            tap_code(KC_VOLU);  // Subir volumen (antes bajaba)
+        }
+    } else if (index == 1) {  // Encoder derecho (scroll)
+        if (clockwise) {
+            tap_code(KC_WH_D);  // Scroll hacia abajo
+        } else {
+            tap_code(KC_WH_U);  // Scroll hacia arriba
+        }
     }
     return false;
 }
