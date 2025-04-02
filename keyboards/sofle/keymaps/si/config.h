@@ -7,21 +7,18 @@
 #define TRI_LAYER_UPPER_LAYER 3
 #define TRI_LAYER_ADJUST_LAYER 4
 
-#    define RGBLIGHT_DEFAULT_HUE 180  // Cambia el tono (0-255)
-#    define RGBLIGHT_DEFAULT_SAT 255  // Máxima saturación
-#    define RGBLIGHT_DEFAULT_VAL 120  // Brillo (0-255)
-// Configuración de RGB
+#define MOUSEKEY_INTERVAL 16  // Interval between scroll events (ms)
+#define MOUSEKEY_DELAY 0      // Delay before scrolling starts
+#define MOUSEKEY_TIME_TO_MAX 40  // Time to reach maximum scrolling speed
+#define MOUSEKEY_WHEEL_INTERVAL 50  // Interval between wheel events
+#define MOUSEKEY_WHEEL_TIME_TO_MAX 100  // Time to reach maximum wheel speed
+
+#define RGBLIGHT_DEFAULT_HUE 180  // Tone
+#define RGBLIGHT_DEFAULT_SAT 255  // Saturation
+#define RGBLIGHT_DEFAULT_VAL 120  // Brightness
+
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLIGHT_EFFECT_BREATHING
-// #    define RGBLIGHT_EFFECT_RAINBOW_MOOD
-// #    define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-// #    define RGBLIGHT_EFFECT_SNAKE
-// #    define RGBLIGHT_EFFECT_KNIGHT
-// #    define RGBLIGHT_EFFECT_CHRISTMAS
-// #    define RGBLIGHT_EFFECT_STATIC_GRADIENT
-// #    define RGBLIGHT_EFFECT_RGB_TEST
-// #    define RGBLIGHT_EFFECT_ALTERNATING
-// #    define RGBLIGHT_EFFECT_TWINKLE
 #    define RGBLIGHT_LIMIT_VAL 120
 #    define RGBLIGHT_HUE_STEP 10
 #    define RGBLIGHT_SAT_STEP 17

@@ -1,3 +1,5 @@
-RGBLIGHT_ENABLE = yes    # Activar LEDs RGB
-WPM_ENABLE = yes         # Opcional: para mostrar WPM en la pantalla
+RGBLIGHT_ENABLE = yes
+WPM_ENABLE = yes
 TRI_LAYER_ENABLE = yes
+MOUSEKEY_ENABLE = yes
+ENCODER_ENABLE = yes
