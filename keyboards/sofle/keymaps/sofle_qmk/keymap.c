@@ -82,8 +82,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `----------------------------------'           '------''---------------------------'
  */
 [_RAISE] = LAYOUT(
-  _______, _______ , _______ , _______ , _______ , _______,                           _______,  _______  , _______,  _______ ,  _______ ,KC_DEL,
-  _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PGUP,   KC_UP, KC_PGDN,KC_KP_PLUS, KC_PLUS,
+  _______,  KC_PWR ,  KC_SLEP, _______ , _______ , _______,                           _______,  _______  , _______,  _______ ,  _______ ,KC_DEL,
+  _______,  KC_INS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PGUP,   KC_UP, KC_PGDN,KC_KP_PLUS, KC_EQL,
   _______, KC_LALT,  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_PEQL,
   _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,  _______,       _______,  KC_BSPC, KC_LSTRT, XXXXXXX, KC_LEND,   XXXXXXX, _______,
                          _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
@@ -135,7 +135,7 @@ void keyboard_post_init_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Primero actualizamos el estado de tri-layer
+    // Pr+mero actualizamos el estado de tri-layer
     state = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 
     // Luego configuramos los colores RGB según la capa activa
