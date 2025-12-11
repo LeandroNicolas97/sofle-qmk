@@ -1,0 +1,15 @@
+# Archivos de compilación
+*.o
+*.hex
+*.bin
+*.elf
+*.map
+
+# Backups
+*.backup
+*.backup*
+*.bak
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
