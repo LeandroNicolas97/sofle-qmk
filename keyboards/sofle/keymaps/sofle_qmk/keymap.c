@@ -114,17 +114,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-uint8_t hue = 43;  // Valor inicial del tono (Amarillo)
+uint8_t hue = 43;  // Initial hue value (Yellow)
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case RGB_TOG:  // Cambiar el color
+        case RGB_TOG:  // Cycle color
             if (record->event.pressed) {
                 hue = (hue + 10) % 256;
                 rgblight_sethsv(hue, 255, 255);
             }
             return false;
-        case KC_RGBTOG:  // Encender/apagar luces
+        case KC_RGBTOG:  // Toggle lights on/off
             if (record->event.pressed) {
                 rgblight_toggle();
             }
@@ -134,28 +134,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void keyboard_post_init_user(void) {
-    rgblight_enable();      // Asegura que el RGB está encendido
-    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT); // Establece un modo estático
-    rgblight_sethsv(hue, 255, 255); // Amarillo por defecto (o el color inicial que desees)
+    rgblight_enable();      // Ensure RGB is enabled
+    rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT); // Set static light mode
+    rgblight_sethsv(hue, 255, 255); // Default color (Yellow)
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Pr+mero actualizamos el estado de tri-layer
+    // Update tri-layer state
     state = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 
-    // Luego configuramos los colores RGB según la capa activa
+    // Set RGB colors based on active layer
     switch (get_highest_layer(state)) {
-        case 0:  // Capa base (QWERTY)
-            rgblight_sethsv(hue, 255, 255);  // Usa el color establecido por RGB_TOG
+        case 0:  // Base layer (QWERTY)
+            rgblight_sethsv(hue, 255, 255);  // Use color set by RGB_TOG
             break;
-        case 1:  // LOWER (Morado/Violeta)
-            rgblight_sethsv(240, 255, 250);  // Violeta
+        case 1:  // LOWER (Violet)
+            rgblight_sethsv(240, 255, 250);
             break;
         case 2:  // RAISE (Cyan)
-            rgblight_sethsv(130, 255, 250);  // Cyan
+            rgblight_sethsv(130, 255, 250);
             break;
-        case 3:  // ADJUST (Verde)
-            rgblight_sethsv(80, 255, 120);  // Verde
+        case 3:  // ADJUST (Green)
+            rgblight_sethsv(80, 255, 120);
             break;
         default:
             break;
@@ -167,17 +167,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {  // Encoder izquierdo (volumen)
+    if (index == 0) {  // Left encoder (volume)
         if (clockwise) {
-            tap_code(KC_VOLD);  // Bajar volumen (antes subía)
+            tap_code(KC_VOLD);  // Volume down
         } else {
-            tap_code(KC_VOLU);  // Subir volumen (antes bajaba)
+            tap_code(KC_VOLU);  // Volume up
         }
-    } else if (index == 1) {  // Encoder derecho (scroll)
+    } else if (index == 1) {  // Right encoder (scroll)
         if (clockwise) {
-            tap_code(KC_WH_D);  // Scroll hacia abajo
+            tap_code(KC_WH_D);  // Scroll down
         } else {
-            tap_code(KC_WH_U);  // Scroll hacia arriba
+            tap_code(KC_WH_U);  // Scroll up
         }
     }
     return false;

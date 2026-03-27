@@ -13,7 +13,7 @@
 #define MOUSEKEY_WHEEL_INTERVAL 50  // Interval between wheel events
 #define MOUSEKEY_WHEEL_TIME_TO_MAX 100  // Time to reach maximum wheel speed
 
-#define RGBLIGHT_DEFAULT_HUE 180  // Tone
+#define RGBLIGHT_DEFAULT_HUE 180  // Hue
 #define RGBLIGHT_DEFAULT_SAT 255  // Saturation
 #define RGBLIGHT_DEFAULT_VAL 120  // Brightness
 
