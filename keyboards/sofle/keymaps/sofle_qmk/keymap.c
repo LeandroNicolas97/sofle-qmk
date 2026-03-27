@@ -13,7 +13,8 @@ enum custom_keycodes {
     KC_PRVWD = QK_USER,
     KC_NXTWD,
     KC_LSTRT,
-    KC_LEND
+    KC_LEND,
+    KC_RGBTOG
 };
 
 #define KC_QWERTY PDF(_QWERTY)
@@ -83,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT(
   _______,  _______ ,  _______, _______ , _______ , _______,                           KC_PWR ,  _______  , _______,  _______ ,  _______ ,KC_DEL,
-  _______,  KC_NUHS,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PGUP,   KC_UP, KC_PGDN,KC_KP_PLUS, KC_PLUS,
+  _______,  KC_NONUS_HASH,  KC_PSCR,   KC_APP,  XXXXXXX, XXXXXXX,                        KC_PGUP, KC_PGUP,   KC_UP, KC_PGDN,KC_KP_PLUS, KC_PLUS,
   _______, KC_LALT,  KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                       KC_PGDN,  KC_LEFT, KC_DOWN, KC_RGHT,  KC_DEL, KC_PEQL,
   _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,  _______,       _______,  KC_BSPC, KC_LSTRT, XXXXXXX, KC_LEND,   XXXXXXX, _______,
                          _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
@@ -104,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT(
   XXXXXXX , XXXXXXX,  XXXXXXX ,  XXXXXXX , XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_QWERTY,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, XXXXXXX, XXXXXXX,
+  QK_BOOT  , XXXXXXX,KC_QWERTY,KC_QWERTY,CG_TOGG,XXXXXXX,                     XXXXXXX, XXXXXXX, KC_RGBTOG, RGB_TOG, XXXXXXX, XXXXXXX,
   XXXXXXX , XXXXXXX,CG_TOGG, XXXXXXX,    XXXXXXX,  XXXXXXX,                     XXXXXXX, KC_MPRV, KC_MPLY, KC_MNXT, XXXXXXX, XXXXXXX,
   XXXXXXX , XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX,  XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX, XXXXXXX,
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
@@ -117,15 +118,19 @@ uint8_t hue = 43;  // Valor inicial del tono (Amarillo)
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case RGB_TOG:  // Usando RGB_TOG para cambiar el color (o el keycode que prefieras)
+        case RGB_TOG:  // Cambiar el color
             if (record->event.pressed) {
-                hue = (hue + 10) % 256;  // Cambia el color en pasos de 10
-                rgblight_sethsv(hue, 255, 255);  // Cambia el color con saturación y brillo al máximo
+                hue = (hue + 10) % 256;
+                rgblight_sethsv(hue, 255, 255);
             }
-            return false;  // No proceses el keycode después de cambiar el color
-        // Agrega otros casos de teclas que desees manejar aquí
+            return false;
+        case KC_RGBTOG:  // Encender/apagar luces
+            if (record->event.pressed) {
+                rgblight_toggle();
+            }
+            return false;
     }
-    return true;  // Para los demás keycodes
+    return true;
 }
 
 void keyboard_post_init_user(void) {
